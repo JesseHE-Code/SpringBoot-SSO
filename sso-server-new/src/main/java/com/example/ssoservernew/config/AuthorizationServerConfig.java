@@ -36,13 +36,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient("sheep1")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
-                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "password")
                 .scopes("all")
                 .autoApprove(false)
                 .and()
                 .withClient("sheep2")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
-                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "password")
                 .scopes("all")
                 .autoApprove(false);
     }

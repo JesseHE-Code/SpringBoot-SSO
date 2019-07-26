@@ -51,11 +51,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
+    /**
+     * HttpSecurity
+     * 确保我们应用中的所有请求都需要用户被认证
+     * .formLogin().permitAll() --> 允许用户进行基于表单的认证
+     * 允许用户使用HTTP基本验证进行认证
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
-                .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
-                .and()
+                //.requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
+                //.and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()   //需要权限的
                 .and()

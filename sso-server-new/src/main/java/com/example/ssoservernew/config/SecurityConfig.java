@@ -39,8 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-    授权方式提供者，判断授权有效性，用户有效性，在判断用户是否有效性，它依赖于UserDetailsService实例，开发人员可以自定义UserDetailsService的实现。
+    /**
+     * 授权方式提供者，判断授权有效性，用户有效性，在判断用户是否有效性，它依赖于UserDetailsService实例，开发人员可以自定义UserDetailsService的实现。
+     * ProviderManager是AuthenticationManager的实现类，提供了基本认证实现逻辑和流程；
+     * ProviderManager 通过 AuthenticationProvider 扩展出更多的验证提供的方式；而 AuthenticationProvider 本身也就是一个接口，
+     * 从类图中我们可以看出它的实现类AbstractUserDetailsAuthenticationProvider 和AbstractUserDetailsAuthenticationProvider
+     * 的子类DaoAuthenticationProvider 。DaoAuthenticationProvider 是Spring Security中一个核心的Provider,对所有的数据库提供
+     * 了基本方法和入口。
+     *
      */
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){

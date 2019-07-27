@@ -19,10 +19,10 @@ public class SheepUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        if(!"codesheep".equals(name)){
+        if(!"hezhiqiang".equals(name)){
             throw new UsernameNotFoundException("User:" + name + "--->Not Found!");
         }
-        return new User(name, passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_NORMAL, ROLE_MEDIUM"));
+        return new User(name, passwordEncoder.encode("45678"), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_NORMAL, ROLE_MEDIUM"));
     }
 }
 

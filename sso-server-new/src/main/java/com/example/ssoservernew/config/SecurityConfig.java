@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -69,12 +70,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
-                //.requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
-                //.and()
+                .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
+                .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()   //需要权限的
+                .antMatchers("**/**.css", "**/**.js").permitAll()
                 .and()
-                .formLogin().permitAll();
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .csrf().disable();
     }
 
     @Override

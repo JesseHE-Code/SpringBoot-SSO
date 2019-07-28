@@ -1,5 +1,7 @@
 package com.example.ssoservernew.domain;
 
+import com.example.ssoservernew.dao.UserInfo;
+import com.example.ssoservernew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -10,19 +12,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-
-public class SheepUserDetailsService implements UserDetailsService {
+public class SsoUserDetailsService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        if(!"hezhiqiang".equals(name)){
+        UserInfo userInfo = userService.findUserByName(name);
+        if (userInfo == null){
             throw new UsernameNotFoundException("User:" + name + "--->Not Found!");
         }
-        return new User(name, passwordEncoder.encode("45678"), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_NORMAL, ROLE_MEDIUM"));
+        else {
+            if (userInfo.getUserName().equals(name)){
+                return new User(name, passwordEncoder.encode(userInfo.getPassword()), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_"+userInfo.getRole()));
+            }
+        }
+        return null;
     }
 }
 

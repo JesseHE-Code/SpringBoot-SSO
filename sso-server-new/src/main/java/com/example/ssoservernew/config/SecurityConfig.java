@@ -51,10 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
+        //定义一个Provider
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        //设置userDetails
         authenticationProvider.setUserDetailsService(userDetailsService);
+        //password Encoder
         authenticationProvider.setPasswordEncoder(passwordEncoder());
+        //是不是隐藏UserNotFound异常
         authenticationProvider.setHideUserNotFoundExceptions(false);
+
         return authenticationProvider;
     }
 
@@ -79,14 +84,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .failureForwardUrl("/login?error")
+                .defaultSuccessUrl("/login-success")
                 .permitAll()
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll()
                 .and()
                 .csrf().disable();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+
+        //AuthenticationProvider 的管理
         auth.authenticationProvider(authenticationProvider());
+
     }
 }
 

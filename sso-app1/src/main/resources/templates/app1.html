@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Application-1</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div>
-    <a type="button" class="btn btn-default" href="localhost:8083/normal">应用2</a>
+<div th:fragment="nav">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="margin: 0; border: 0">
+        <div class="container">
+            <div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-form navbar-right">
+                    <a class="btn btn-danger" href="http://localhost:8081/logout">退出</a>
+                    <a class="btn btn-danger" href="http://localhost:8083/normal">App2</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
 </body>
 </html>

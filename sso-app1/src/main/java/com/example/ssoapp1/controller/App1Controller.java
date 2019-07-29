@@ -1,5 +1,7 @@
 package com.example.ssoapp1.controller;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
+@PropertySource("classpath:application.properties")
+
 public class App1Controller {
 
     @ResponseBody
@@ -37,7 +41,7 @@ public class App1Controller {
         return "admin permission test success !!!";
     }
 
-    @RequestMapping("/app")
+    @GetMapping("/app1")
     public String app1(){
         return "app1";
     }

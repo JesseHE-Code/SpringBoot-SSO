@@ -24,15 +24,16 @@ public class SsoUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
         UserInfo userInfo = userService.findUserByName(name);
+        String userPassword = "noUser";
         if (userInfo == null){
             throw new UsernameNotFoundException("User:" + name + "--->Not Found!");
         }
-        else {
-            if (userInfo.getUserName().equals(name)){
-                return new User(name, passwordEncoder.encode(userInfo.getPassword()), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_"+userInfo.getRole()));
-            }
+        else
+        {
+            userPassword = userInfo.getPassword();
         }
-        return null;
+
+        return new User(name, passwordEncoder.encode(userPassword), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_"+userInfo.getRole()));
     }
 }
 

@@ -1,6 +1,7 @@
-package com.example.ssoservernew.service;
+package com.example.ssoservernew.service.impl;
 
 import com.example.ssoservernew.dao.UserInfo;
+import com.example.ssoservernew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +24,6 @@ public class UserServiceImpl implements UserService {
                 @Override
                 public UserInfo mapRow(ResultSet arg0, int arg1) throws SQLException {
                     UserInfo user = new UserInfo();
-
                     user.setUserName(arg0.getString("user_name"));
                     user.setPassword(arg0.getString("user_password"));
                     user.setRole(arg0.getString("user_role"));

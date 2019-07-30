@@ -86,17 +86,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authenticationProvider(authenticationProvider());
 
         http
+                //.successHandler(new SuccessHandler())
                 .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()   //需要权限的
-                .antMatchers("**/**.css", "**/**.js").permitAll()
+                .antMatchers("**/**.css", "**/**.js","/register").permitAll()
+                .antMatchers("/login-success").authenticated()
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
                 .failureForwardUrl("/login?error")
                 .defaultSuccessUrl("/login-success")
-                .successHandler(new SuccessHandler())
+
                 .permitAll()
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll()

@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletResponse;
  * @Date :2019-07-30 18:09
  **/
 
-public class SuccessHandler implements AuthenticationSuccessHandler {
-
+public class SuccessHandler //implements AuthenticationSuccessHandler {
+{
+    /*
     private final static Logger logger = LoggerFactory.getLogger(SuccessHandler.class);
     /**
      *
@@ -22,7 +23,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
      * @param httpServletResponse
      * @param authentication
      */
-    @Override
+   /* @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication){
         //可以在认证成功后获取到一些信息，并返回到响应的位置
@@ -32,5 +33,5 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         logger.info(httpServletRequest.getContextPath());
         logger.info(httpServletRequest.getServletPath());
 
-    }
+    }*/
 }

@@ -10,4 +10,11 @@ public interface UserService {
      * @return
      */
     public UserInfo findUserByName(String userName);
+
+    /**
+     * 注册用户时候的用户信息插入接口
+     * @param userInfo
+     * @return
+     */
+    public int insertUser(UserInfo userInfo);
 }

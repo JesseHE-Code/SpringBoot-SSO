@@ -41,13 +41,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         // 定义了两个客户端应用的通行证
         clients.inMemory()
-                .withClient("sheep1")
+                .withClient("app1")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
                 .autoApprove(false)
                 .and()
-                .withClient("sheep2")
+                .withClient("app2")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
@@ -71,12 +71,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
         endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
+
         DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
+
         tokenServices.setTokenStore(endpoints.getTokenStore());
+
         tokenServices.setSupportRefreshToken(true);
+
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 一天有效期
+
         endpoints.tokenServices(tokenServices);
     }
 

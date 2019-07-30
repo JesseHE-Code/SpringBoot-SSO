@@ -1,5 +1,6 @@
 package com.example.ssoservernew.config;
 
+import com.example.ssoservernew.handler.SuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -41,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     *
      * 授权方式提供者，判断授权有效性，用户有效性，在判断用户是否有效性，它依赖于UserDetailsService实例，开发人员可以自定义UserDetailsService的实现。
      * ProviderManager是AuthenticationManager的实现类，提供了基本认证实现逻辑和流程；
      * ProviderManager 通过 AuthenticationProvider 扩展出更多的验证提供的方式；而 AuthenticationProvider 本身也就是一个接口，
@@ -68,23 +71,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 确保我们应用中的所有请求都需要用户被认证
      * .formLogin().permitAll() --> 允许用户进行基于表单的认证
      * 允许用户使用HTTP基本验证进行认证
+     *  通过重载，配置如何拦截器保护请求
+     *
+     *  configure(WebSecurity)	通过重载，配置Spring Security的Filter链
      *
      * @param http
      * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception{
+
+
+        http.addFilterAt(personalLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(authenticationProvider());
+
         http
+                //.successHandler(new SuccessHandler())
                 .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").authenticated()   //需要权限的
-                .antMatchers("**/**.css", "**/**.js").permitAll()
+                .antMatchers("**/**.css", "**/**.js","/register").permitAll()
+                .antMatchers("/login-success").authenticated()
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
                 .failureForwardUrl("/login?error")
                 .defaultSuccessUrl("/login-success")
+
                 .permitAll()
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll()
@@ -92,6 +107,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
+    /**
+     * 通过重载，配置user-detail服务
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 
@@ -99,5 +119,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
 
     }
+
+    private PersonalLoginFilter personalLoginFilter(){
+
+        PersonalLoginFilter personalLoginFilter = new PersonalLoginFilter("/login");
+        try {
+            personalLoginFilter.setAuthenticationManager(authenticationManager());
+        }
+        catch (Exception e){
+            //
+        }
+
+
+        return personalLoginFilter;
+
+    }
+
+
 }
 

@@ -41,13 +41,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         // 定义了两个客户端应用的通行证
         clients.inMemory()
-                .withClient("sheep1")
+                .withClient("app1")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
                 .autoApprove(false)
                 .and()
-                .withClient("sheep2")
+                .withClient("app2")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")

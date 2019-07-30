@@ -1,4 +1,4 @@
-package com.example.ssoservernew.domain;
+package com.example.ssoservernew.service;
 
 import com.example.ssoservernew.dao.UserInfo;
 import com.example.ssoservernew.service.UserService;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SsoUserDetailsService implements UserDetailsService {
+public class SsoUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

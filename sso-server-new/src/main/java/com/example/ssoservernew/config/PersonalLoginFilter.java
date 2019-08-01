@@ -1,5 +1,6 @@
 package com.example.ssoservernew.config;
 
+import com.example.ssoservernew.handler.MySuccessHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
@@ -33,6 +35,11 @@ public class PersonalLoginFilter extends AbstractAuthenticationProcessingFilter 
 
     PersonalLoginFilter(String defaultFilterProcessesUrl){
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
+        super.setAuthenticationSuccessHandler(new MySuccessHandler());
+        SimpleUrlAuthenticationSuccessHandler successHandler = (SimpleUrlAuthenticationSuccessHandler)getSuccessHandler();
+        successHandler.setDefaultTargetUrl("/success");
+        logger.info("PersonalLoginFilter---------------");
+        logger.info(successHandler.toString());
     }
 
     @Override

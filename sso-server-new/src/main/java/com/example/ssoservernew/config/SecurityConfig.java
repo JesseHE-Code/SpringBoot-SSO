@@ -1,6 +1,6 @@
 package com.example.ssoservernew.config;
 
-import com.example.ssoservernew.handler.SuccessHandler;
+import com.example.ssoservernew.handler.MySuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private MySuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -81,30 +83,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
+        http
+                .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**","/**")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
+                .antMatchers("**/**.css", "**/**.js","/register").permitAll()
+                .and()
+                .formLogin().successHandler(successHandler)
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("SESSIONID","JSESSIONID")
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login")
+                    .permitAll()
+                .and()
+                .csrf()
+                    .disable();
 
         http.addFilterAt(personalLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(authenticationProvider());
-
-        http
-                //.successHandler(new SuccessHandler())
-                .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/**").authenticated()   //需要权限的
-                .antMatchers("**/**.css", "**/**.js","/register").permitAll()
-                .antMatchers("/login-success").authenticated()
-                .and()
-
-                .formLogin()
-                .loginPage("/login")
-                .failureForwardUrl("/login?error")
-                .defaultSuccessUrl("/login-success")
-
-                .permitAll()
-                .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll()
-                .and()
-                .csrf().disable();
     }
 
     /**
@@ -129,12 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         catch (Exception e){
             //
         }
-
-
         return personalLoginFilter;
-
     }
-
-
 }
 

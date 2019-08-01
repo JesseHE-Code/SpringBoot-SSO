@@ -2,6 +2,7 @@ package com.example.ssoservernew.controller;
 
 import com.example.ssoservernew.dao.UserInfo;
 import com.example.ssoservernew.service.impl.UserServiceImpl;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,21 +16,21 @@ public class SsoController {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping("/login")
+    @GetMapping(value={"/login","/"})
     public String login(){
         return "login";
     }
 
     @ResponseBody
-    @GetMapping("/login-success")
+    @GetMapping("/success")
     public String success(){
         return "login-success";
     }
 
     @ResponseBody
-    @GetMapping("/login-error")
+    @GetMapping("/test")
     public String error(){
-        return "Error!";
+        return "Error!----->test";
     }
 
     @ResponseBody

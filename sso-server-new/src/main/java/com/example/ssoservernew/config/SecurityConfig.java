@@ -87,12 +87,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**","/**")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
-                .antMatchers("**/**.css", "**/**.js","/register").permitAll()
+                    .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
+                    .antMatchers("**/**.css", "**/**.js","/register").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                    .loginPage("/login")
+                    .permitAll()
                 .and()
                 .logout()
                     .clearAuthentication(true)

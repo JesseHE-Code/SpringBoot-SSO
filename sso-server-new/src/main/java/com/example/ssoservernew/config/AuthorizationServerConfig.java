@@ -60,13 +60,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
-                .autoApprove(false)
+                .autoApprove(true)
                 .and()
                 .withClient("app2")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
-                .autoApprove(false);
+                .autoApprove(true);
     }
 
     /**

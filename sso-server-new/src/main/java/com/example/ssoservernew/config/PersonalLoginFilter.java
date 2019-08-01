@@ -44,6 +44,9 @@ public class PersonalLoginFilter extends AbstractAuthenticationProcessingFilter 
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException{
+
+        String redirectUrl = obtainRedercitUrl(httpServletRequest);
+
         //获取用户名和密码，进行权限判定
         //生成认证
         logger.info("进入自定义的请求过滤器-------！");
@@ -59,14 +62,26 @@ public class PersonalLoginFilter extends AbstractAuthenticationProcessingFilter 
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
                 username, password);
-        logger.info("生成token:");
+        logger.info("生成UsernamePasswordAuthenticationToken:");
         logger.info(authRequest.toString());
-        logger.info("开始校验用户名和密码");
+
+        logger.info("回调地址");
+        logger.info(redirectUrl);
+
+        //自定义回调URL，若存在则放入Session
+        if(redirectUrl != null && !"".equals(redirectUrl)){
+            httpServletRequest.getSession().setAttribute("callCustomRediretUrl", redirectUrl);
+        }
+
         setDetails(httpServletRequest, authRequest);
 
         logger.info(this.getAuthenticationManager().toString());
 
         return this.getAuthenticationManager().authenticate(authRequest);
+    }
+
+    protected String obtainRedercitUrl(HttpServletRequest request) {
+        return request.getParameter("spring-security-redirect");
     }
 
 

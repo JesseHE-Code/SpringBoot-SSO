@@ -10,6 +10,9 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -30,6 +33,8 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    private RequestCache requestCache = new HttpSessionRequestCache();
+
     /**
      *
      * @param httpServletRequest
@@ -42,15 +47,33 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         //可以在认证成功后获取到一些信息，并返回到响应的位置
 
         logger.info("onAuthenticationSuccess-------logger-----------");
-        logger.info(httpServletRequest.toString());
-        logger.info(httpServletRequest.getMethod());
-        logger.info(httpServletRequest.getContextPath());
-        logger.info(httpServletRequest.getServletPath());
-        logger.info(httpServletRequest.getRequestedSessionId());
+
+        SavedRequest savedRequest = requestCache.getRequest(httpServletRequest, httpServletResponse);
+        if(savedRequest == null){
+            logger.info("saveRequest = NULL!");
+            //用户判断是否要使用上次通过session里缓存的回调URL地址
+            int flag = 0;
+            //通过提交登录请求传递需要回调的URL callCustomRediretUrl
+            if(httpServletRequest.getSession().getAttribute("callCustomRediretUrl") != null && !"".equals(httpServletRequest.getSession().getAttribute("callCustomRediretUrl"))) {
+                String url = String.valueOf(httpServletRequest.getSession().getAttribute("callCustomRediretUrl"));
+                //若session 存在则需要使用自定义回调的URL 而不是缓存的URL
+                super.setDefaultTargetUrl(url);
+                super.setAlwaysUseDefaultTargetUrl(true);
+                flag = 1;
+                httpServletRequest.getSession().setAttribute("callCustomRediretUrl", "");
+            }
+            if(flag == 0){
+                super.setDefaultTargetUrl("/success");
+            }
+            super.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
+            return;
+        }
+
+        String callBackUrl = savedRequest.getRedirectUrl();
+        logger.info("Call back URL:" + callBackUrl);
+
 
         logger.info("httpServletResponse");
-        //logger.info(httpServletResponse.getHeaderNames().toString());
-
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
         //获取session
@@ -64,8 +87,8 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         logger.info(session.getId());
 
         /*Set target URL to redirect*/
-        String targetUrl = determineTargetUrl(authentication);
-        redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, targetUrl);
+        //String targetUrl = determineTargetUrl(authentication);
+        redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, callBackUrl);
     }
 
     protected String determineTargetUrl(Authentication authentication) {

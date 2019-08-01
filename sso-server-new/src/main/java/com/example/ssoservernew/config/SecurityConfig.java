@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
                 .antMatchers("**/**.css", "**/**.js","/register").permitAll()
                 .and()
-                .formLogin().successHandler(successHandler)
+                .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .and()

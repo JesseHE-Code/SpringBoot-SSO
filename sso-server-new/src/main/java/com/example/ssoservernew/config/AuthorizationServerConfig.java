@@ -3,8 +3,12 @@ package com.example.ssoservernew.config;
 /*
 认证服务器配置
  */
+import com.example.ssoservernew.util.MyRedisTokenStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -15,14 +19,25 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.util.concurrent.TimeUnit;
 
 
 @Configuration
 @EnableAuthorizationServer   //作为认证中心
+@EnableRedisHttpSession
 
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
 
     /**
      * 配置ClientDetailsService
@@ -70,7 +85,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
-        endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
+        //endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
+
+        endpoints.tokenStore(redisTokenStore());
+        endpoints.authenticationManager(authenticationManager).accessTokenConverter(jwtAccessTokenConverter());
 
         DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
 
@@ -82,7 +100,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
 
-        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 一天有效期
+        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5)); // 一天有效期
 
         endpoints.tokenServices(tokenServices);
     }
@@ -119,6 +137,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey("testKey");
         return converter;
+    }
+
+    @Bean
+    public TokenStore redisTokenStore(){
+        MyRedisTokenStore redisTokenStore = new MyRedisTokenStore(redisConnectionFactory);
+        redisTokenStore.setPrefix("redis");
+        return redisTokenStore;
     }
 
 }

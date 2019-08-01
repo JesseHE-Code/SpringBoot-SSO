@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-@PropertySource("classpath:application.properties")
 
 public class App1Controller {
 

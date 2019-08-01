@@ -46,6 +46,10 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         logger.info(httpServletRequest.getMethod());
         logger.info(httpServletRequest.getContextPath());
         logger.info(httpServletRequest.getServletPath());
+        logger.info(httpServletRequest.getRequestedSessionId());
+
+        logger.info("httpServletResponse");
+        //logger.info(httpServletResponse.getHeaderNames().toString());
 
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
@@ -55,6 +59,9 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         session.setAttribute("uname", authUser.getUsername());
         session.setAttribute("authorities", authentication.getAuthorities());
+
+        logger.info(session.getServletContext().getContextPath());
+        logger.info(session.getId());
 
         /*Set target URL to redirect*/
         String targetUrl = determineTargetUrl(authentication);

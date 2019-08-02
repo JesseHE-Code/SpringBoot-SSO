@@ -100,7 +100,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
 
-        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5)); // 一天有效期
+        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5)); //
 
         endpoints.tokenServices(tokenServices);
     }

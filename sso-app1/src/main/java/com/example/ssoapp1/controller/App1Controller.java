@@ -1,12 +1,12 @@
 package com.example.ssoapp1.controller;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -42,6 +42,7 @@ public class App1Controller {
 
     @GetMapping("/app1")
     public String app1(){
+
         return "app1";
     }
 }

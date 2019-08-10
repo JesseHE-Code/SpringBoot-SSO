@@ -2,7 +2,6 @@ package com.example.ssoservernew.controller;
 
 import com.example.ssoservernew.dao.UserInfo;
 import com.example.ssoservernew.service.impl.UserServiceImpl;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,7 +2,6 @@ package com.example.ssoservernew.dao;
 
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * 用户信息类
  * 包含：用户名，用户密码和用户角色

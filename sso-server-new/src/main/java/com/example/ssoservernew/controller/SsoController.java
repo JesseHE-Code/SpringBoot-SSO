@@ -4,10 +4,15 @@ import com.example.ssoservernew.dao.UserInfo;
 import com.example.ssoservernew.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 public class SsoController {
@@ -32,25 +37,36 @@ public class SsoController {
         return "Error!----->test";
     }
 
-    @ResponseBody
-    @PostMapping("/register")
-    public String register(@RequestParam("name") String userName, @RequestParam("pw") String password,
-                           @RequestParam("rol") String role){
+    @GetMapping(value={"/register"})
+    public String register(){
+        return "register";
+    }
+
+    //@ResponseBody
+    @PostMapping("/registerapi")
+    public String register_1(@RequestParam("username") String userName, @RequestParam("password") String password,
+                             @RequestParam("passwordc")String passwordc, ModelMap model){
+        String role = "normal";
         role = role.toUpperCase();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUserName(userName);
-        userInfo.setPassword(password);
-        userInfo.setRole(role);
-        int states = userService.insertUser(userInfo);
-        if(1 == states){
-            return "insert OK!";
-        }
-        else if(2 == states){
-            return "insert error!";
+
+        if (!password.equals(passwordc)){
+            model.addAttribute("error", true);
+            model.addAttribute("errorInfo", "密码不匹配");
+            model.addAttribute("username", userName);
+            return "register";
         }
         else {
-            return "User is in table";
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserName(userName);
+            userInfo.setPassword(password);
+            userInfo.setRole(role);
+            int states = userService.insertUser(userInfo);
+            if (1 == states) {
+                model.addAttribute("redictUrl", "/login");
+                return "registerSuccess";
+            }
         }
+        return null;
     }
 
 }

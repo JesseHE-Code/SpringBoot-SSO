@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScans;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-
 public class SsoServerNewApplication {
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.example.ssoservernew.config;
 
+import com.example.ssoservernew.handler.MyFailHandler;
 import com.example.ssoservernew.handler.MySuccessHandler;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -18,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 /**
  * @Author :hezhiqiang06
@@ -36,6 +39,7 @@ public class PersonalLoginFilter extends AbstractAuthenticationProcessingFilter 
     PersonalLoginFilter(String defaultFilterProcessesUrl){
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
         super.setAuthenticationSuccessHandler(new MySuccessHandler());
+        super.setAuthenticationFailureHandler(new MyFailHandler());
         SimpleUrlAuthenticationSuccessHandler successHandler = (SimpleUrlAuthenticationSuccessHandler)getSuccessHandler();
         successHandler.setDefaultTargetUrl("/success");
         logger.info("PersonalLoginFilter---------------");
@@ -60,6 +64,9 @@ public class PersonalLoginFilter extends AbstractAuthenticationProcessingFilter 
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
 
+        /*if(username == null | password == null){
+            throw new UserPrincipalNotFoundException("用户名和密码错误");
+        }*/
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
                 username, password);
         logger.info("生成UsernamePasswordAuthenticationToken:");

@@ -69,6 +69,7 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         session.setAttribute("uname", authUser.getUsername());
         session.setAttribute("authorities", authentication.getAuthorities());
 
+        httpServletRequest.setAttribute("uname", authUser.getUsername());
         logger.info(session.getId());
 
         /*Set target URL to redirect*/

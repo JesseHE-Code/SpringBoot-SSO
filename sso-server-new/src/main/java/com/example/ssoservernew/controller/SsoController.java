@@ -17,12 +17,11 @@ public class SsoController {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping(value={"/login","/"})
+    @GetMapping(value={"/login"})
     public String login(){
         return "login";
     }
 
-    @ResponseBody
     @GetMapping("/success")
     public String success(){
         return "login-success";
@@ -39,7 +38,14 @@ public class SsoController {
         return "register";
     }
 
-    //@ResponseBody
+    /**
+     *
+     * @param userName
+     * @param password
+     * @param passwordc
+     * @param model
+     * @return 根据处理结果
+     */
     @PostMapping("/registerapi")
     public String register_1(@RequestParam("username") String userName, @RequestParam("password") String password,
                              @RequestParam("passwordc")String passwordc, ModelMap model){
@@ -61,9 +67,12 @@ public class SsoController {
             if (1 == states) {
                 model.addAttribute("redictUrl", "/login");
                 return "registerSuccess";
+            } else {
+                model.addAttribute("error", true);
+                model.addAttribute("errorInfo", "用户已存在");
+                model.addAttribute("username", userName);
+                return "register";
             }
         }
-        return null;
     }
-
 }

@@ -36,9 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private MySuccessHandler successHandler;
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -88,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
-                    .antMatchers("**/**.css", "**/**.js","/register","**/**.ico", "/registerapi","/login","/registerSuccess").permitAll()
+                    .antMatchers("**/**.css", "**/**.js","/register","**/**.ico", "/registerapi","/login","/registerSuccess","/").permitAll()
                 .and()
                 .formLogin()
                     .loginPage("/login")

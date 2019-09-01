@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableAuthorizationServer   //作为认证中心
 @EnableRedisHttpSession
-
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
@@ -85,9 +84,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
-        //endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
-
         endpoints.tokenStore(redisTokenStore());
+
         endpoints.authenticationManager(authenticationManager).accessTokenConverter(jwtAccessTokenConverter());
 
         DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();

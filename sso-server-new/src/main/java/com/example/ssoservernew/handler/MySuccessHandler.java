@@ -76,10 +76,12 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, callBackUrl);
     }
 
+    @Override
     public RedirectStrategy getRedirectStrategy() {
         return redirectStrategy;
     }
 
+    @Override
     public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
         this.redirectStrategy = redirectStrategy;
     }

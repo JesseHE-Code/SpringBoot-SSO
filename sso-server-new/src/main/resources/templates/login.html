@@ -6,16 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link rel='stylesheet' type="text/css" href='css/bootstrap.min.css'>
-    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 
 <body>
     <div class="container">
-        <!--<div>
-            <span th:if="${param.error}" th:text="${session?.SPRING_SECURITY_LAST_EXCEPTION?.message}" class="help-block" style="color:red;"></span>
-        </div>
-        -->
-
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
                 <form class="form-horizontal" name="f" method="post" th:action="@{/login}">
@@ -53,40 +48,39 @@
                             <a href="/register"  id="register_btn" class="btn-register btn-info btn-block btn-lg">Create an account</a>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <span class="tips-third"></span>
-                                </div>
-                                <div class="row">
-                                    <span class="tips-third">第三方</span>
-                                </div>
-                                <div class="row">
-                                    <span class="tips-third"></span>
-                                </div>
+                </form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="row">
+                                <span class="tips-third"></span>
                             </div>
-                            <div class="col-md-9">
-                                <div class="col-md-3">
-                                    <button class="btn-third">
-                                        <img src="img/weixin_Wechat_72px.ico" alt="微信登录" class="img-rounded">
-                                    </button>
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn-third">
-                                        <img src="img/QQ_72px.ico" alt="QQ登录" class="img-rounded" >
-                                    </button>
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn-third">
-                                        <img src="img/face_recognition_72px.ico" alt="Face登录" class="img-rounded">
-                                    </button>
-                                </div>
+                            <div class="row">
+                                <span class="tips-third">第三方</span>
+                            </div>
+                            <div class="row">
+                                <span class="tips-third"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="col-md-3">
+                                <button class="btn-third">
+                                    <img src="img/weixin_Wechat_72px.ico" alt="微信登录" class="img-rounded">
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn-third">
+                                    <img src="img/QQ_72px.ico" alt="QQ登录" class="img-rounded" >
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn-third" id="face_btn" href="/webCamera">
+                                    <img src="img/face_recognition_72px.ico" alt="Face登录" class="img-rounded">
+                                </a>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

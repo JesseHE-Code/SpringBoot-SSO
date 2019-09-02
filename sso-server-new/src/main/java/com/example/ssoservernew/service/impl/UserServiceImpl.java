@@ -1,6 +1,7 @@
 package com.example.ssoservernew.service.impl;
 
 import com.example.ssoservernew.dao.UserInfo;
+import com.example.ssoservernew.dao.UserMapFace;
 import com.example.ssoservernew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ *
+ */
 @Component
 public class UserServiceImpl implements UserService {
 
@@ -59,5 +63,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return states;
+    }
+
+    @Override
+    public UserMapFace selectNameByFaceId(String faceId) {
+        try {
+            UserMapFace userMapFace = jdbcTemplate.queryForObject("select * from user_map_faceid where face_id = \"" + faceId + "\"", new RowMapper<UserMapFace>() {
+                @Override
+                public UserMapFace mapRow(ResultSet arg0, int arg1) throws SQLException {
+                    UserMapFace user = new UserMapFace();
+                    user.setUserName(arg0.getString("user_name"));
+                    return user;
+                }
+            });
+            return userMapFace;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 }

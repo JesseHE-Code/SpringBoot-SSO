@@ -1,7 +1,10 @@
 package com.example.ssoservernew.service;
 
 import com.example.ssoservernew.dao.UserInfo;
+import com.example.ssoservernew.dao.UserMapFace;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UserService {
 
     /**
@@ -17,4 +20,11 @@ public interface UserService {
      * @return
      */
     public int insertUser(UserInfo userInfo);
+
+    /**
+     *  通过 faceid 查询 用户名
+     * @param faceId
+     * @return
+     */
+    public UserMapFace selectNameByFaceId(String faceId);
 }

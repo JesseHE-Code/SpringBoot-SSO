@@ -1,6 +1,5 @@
 package com.example.ssoservernew.config;
 
-import com.example.ssoservernew.handler.MySuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -65,6 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
+    @Bean
+    public FaceLoginProvider faceLoginProvider() {
+        FaceLoginProvider faceLoginProvider =  new FaceLoginProvider();
+        faceLoginProvider.setUserDetailsService(userDetailsService);
+        return faceLoginProvider;
+    }
     /**
      * HttpSecurity
      * 确保我们应用中的所有请求都需要用户被认证
@@ -84,8 +88,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**","/**")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/oauth/**", "/success","/test").authenticated()   //需要权限的
-                    .antMatchers("**/**.css", "**/**.js","/register","**/**.ico", "/registerapi","/login","/registerSuccess","/").permitAll()
+                     //需要权限的
+                    .antMatchers("/oauth/**", "/success","/test").authenticated()
+                .and()
+                .authorizeRequests()
+                    //不需要
+                    .antMatchers("**/**.css", "**/**.js","/register","**/**.ico", "/registerapi","/login","/registerSuccess").permitAll()
+                    .antMatchers("/faceLoginHandel","/faceUpload", "/webCamera", "/uploadSuccess").permitAll()
                 .and()
                 .formLogin()
                     .loginPage("/login")
@@ -102,8 +111,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .disable();
 
+        FaceLoginFilter faceLoginFilter = faceLoginFilter();
+        faceLoginFilter.setAuthenticationManager(authenticationManager());
+
         http.addFilterAt(personalLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(faceLoginFilter, UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(authenticationProvider());
+        http.authenticationProvider(faceLoginProvider());
     }
 
     /**
@@ -116,6 +130,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //AuthenticationProvider 的管理
         auth.authenticationProvider(authenticationProvider());
+        auth.authenticationProvider(faceLoginProvider());
 
     }
 
@@ -129,6 +144,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //
         }
         return personalLoginFilter;
+    }
+
+    private FaceLoginFilter faceLoginFilter(){
+        FaceLoginFilter faceLoginFilter = new FaceLoginFilter();
+        return faceLoginFilter;
     }
 }
 

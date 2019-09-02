@@ -5,8 +5,10 @@
     <title>Face Login</title>
 </head>
 <body>
-    <img th:src="${file}" >
-    <p>用户名：<input name="username" type="text" th:value="${user}" disabled></p>
-    <button type="submit">确认登录</button>
+    <form class="form-horizontal" name="f" method="post" th:action="@{/faceLoginHandel}">
+        <img th:src="${file}" >
+        <p>用户：<input name="username" type="text" th:value="${user}" readonly="readonly"></p>
+        <button type="submit">确认登录</button>
+    </form>
 </body>
 </html>

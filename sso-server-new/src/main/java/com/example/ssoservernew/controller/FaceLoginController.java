@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -43,7 +40,7 @@ public class FaceLoginController {
         String result = HttpClientUtils.sendHttp(HttpRequestMethedEnum.HttpPost,API_URL_FACE_RECONGNITION, params, null);
         logger.info("uploadSuccess ,result:{}",result);
         if(result.equals("error result")){
-            return "error";
+            return "error_1";
         }
         String recongnitionName = result.split("'")[1];
         logger.info("uploadSuccess, recongnitionName:{}", recongnitionName);
@@ -70,5 +67,10 @@ public class FaceLoginController {
             e.printStackTrace();
         }
         return "Fail";
+    }
+
+    @PostMapping("/faceLoginHandel")
+    public String faceLoginHandel(){
+        return "faceLoginHandel";
     }
 }

@@ -18,16 +18,15 @@ public class SsoController {
         return "login";
     }
 
-    @ResponseBody
-    @GetMapping("/success")
+    @GetMapping(value={"/success", "/index"})
     public String success(){
-        return "login-success";
+        return "index";
     }
 
     @ResponseBody
     @GetMapping("/test")
     public String error(){
-        return "Error!----->test";
+        return "SSO test";
     }
 
     @GetMapping(value={"/register"})

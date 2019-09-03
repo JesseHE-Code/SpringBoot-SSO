@@ -64,12 +64,6 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         //获取session
         HttpSession session = httpServletRequest.getSession();
-        /*Set some session variables*/
-        User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        session.setAttribute("uname", authUser.getUsername());
-        session.setAttribute("authorities", authentication.getAuthorities());
-
-        httpServletRequest.setAttribute("uname", authUser.getUsername());
         logger.info(session.getId());
 
         /*Set target URL to redirect*/

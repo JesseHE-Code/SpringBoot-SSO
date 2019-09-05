@@ -68,7 +68,7 @@ public class FaceLoginController {
         }
         return "Fail";
     }
-
+    @ResponseBody
     @PostMapping("/faceLoginHandel")
     public String faceLoginHandel(){
         return "faceLoginHandel";

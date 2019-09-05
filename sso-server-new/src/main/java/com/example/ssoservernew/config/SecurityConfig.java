@@ -77,7 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *  通过重载，配置如何拦截器保护请求
      *
      *  configure(WebSecurity)	通过重载，配置Spring Security的Filter链
-     *
+     *  .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**")
+     *                 .and()
      * @param http
      * @throws Exception
      */
@@ -85,16 +86,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
 
         http
-                .requestMatchers().antMatchers("/oauth/**","/login/**", "/logout/**","/**")
-                .and()
-                .authorizeRequests()
-                     //需要权限的
-                    .antMatchers("/oauth/**", "/success","/test").authenticated()
-                .and()
                 .authorizeRequests()
                     //不需要
-                    .antMatchers("**/**.css", "**/**.js","/register","**/**.ico", "/registerapi","/login","/registerSuccess").permitAll()
-                    .antMatchers("/faceLoginHandel","/faceUpload", "/webCamera", "/uploadSuccess").permitAll()
+                    .antMatchers("/**/*.css",
+                            "/**/*.js",
+                            "/**/*.html",
+                            "/**/*.ico",
+                            "/*.png",
+                            "/registerapi",
+                            "/register",
+                            "/login",
+                            "/registerSuccess",
+                            "/faceLoginHandel",
+                            "/faceLogin",
+                            "/faceUpload",
+                            "/webCamera",
+                            "/uploadSuccess").permitAll()
+                .and()
+                .authorizeRequests()
+                    //需要权限的
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/login")

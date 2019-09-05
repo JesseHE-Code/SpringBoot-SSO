@@ -45,18 +45,14 @@ public class FaceLoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new AuthenticationServiceException("Authentication method not supported:\" "+ request.getMethod() + "\"");
         }
 
-
         String userFaceID = request.getParameter("username");
-        //userFaceID = "jessehe";
 
         FaceLoginToken authRequest = new FaceLoginToken(userFaceID);
 
-        logger.info("生成UsernamePasswordAuthenticationToken:");
+        logger.info("FaceLoginToken 生成AuthenticationToken:");
         logger.info(authRequest.toString());
 
         setDetails(request, authRequest);
-
-        //logger.info(this.getAuthenticationManager().toString());
 
         return this.getAuthenticationManager().authenticate(authRequest);
     }

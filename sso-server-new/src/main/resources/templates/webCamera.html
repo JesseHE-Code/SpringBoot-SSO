@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="ZH-CN">
+<html lang="ZH-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>web RTC 测试</title>
+    <title>web Camera for Login</title>
+
+    <script type="text/javascript" th:src="@{js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/ccv.js}"></script>
+    <script type="text/javascript" th:src="@{js/cascade.js}"></script>
+    <script type="text/javascript" th:src="@{js/jquery.facedetection.js}"></script>
+
 </head>
-<script src="./js/jquery-3.2.1.min.js"></script>
-<script src="./js/ccv.js"></script>
-<script src="./js/cascade.js"></script>
-<script src="./js/jquery.facedetection.js"></script>
 
-<style>
-
-</style>
 <body>
-<form id="imageForm" enctype="multipart/form-data">
-    <div class="booth">
-        <video id="video" width="400" height="300" muted class="abs" ></video>
-        <canvas id="canvas" width="400" height="300"></canvas>
-    </div>
-</form>
+    <form id="imageForm" enctype="multipart/form-data">
+        <div class="booth">
+            <video id="video" width="400" height="300" muted class="abs" ></video>
+            <canvas id="canvas" width="400" height="300"></canvas>
+        </div>
+    </form>
 
-<script>
+<script type="text/javascript">
     $(function () {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan(basePackages={"com.example.ssoservernew", "com.example.ssoservernew.config", "com.example.ssoservernew.controller","com.example.ssoservernew.dao", "com.example.ssoservernew.service"})
 public class SsoServerNewApplication {
 
     public static void main(String[] args) {

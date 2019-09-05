@@ -45,7 +45,6 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
         //可以在认证成功后获取到一些信息，并返回到响应的位置
-
         logger.info("onAuthenticationSuccess-------logger-----------");
 
         SavedRequest savedRequest = requestCache.getRequest(httpServletRequest, httpServletResponse);
